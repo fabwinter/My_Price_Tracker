@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded',()=>{
+      const result=document.getElementById('result');
+      Quagga.init({
+        inputStream:{ type:'LiveStream', constraints:{facingMode:'environment'} },
+        decoder:{ readers:['ean_reader','upc_reader'] }
+      }, err=>{
+        if(err){console.error(err);return;}
+        Quagga.start();
+      });
+      Quagga.onDetected(async data=>{
+        const code=data.codeResult.code;
+        result.textContent='Detected '+code;
+        Quagga.stop();
+      });
+    });
+  </script>
+</head>
+<body>
+  <h1>Scan barcode</h1>
+  <div id="interactive" class="viewport"></div>
+  <div id="result"></div>
+</body>
+</html>

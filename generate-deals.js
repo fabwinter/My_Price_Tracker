@@ -1,0 +1,10 @@
+import { openDb } from './db.js';
+import fs from 'fs';
+const db = await openDb(process.env.DB_PATH || './db.sqlite');
+const today=new Date().toISOString().split('T')[0];
+const rows = await db.all('SELECT * FROM products WHERE price <= target AND target IS NOT NULL');
+const deals = rows.map(r=>({title:r.title,url:r.url,price:r.price,target:r.target}));
+fs.mkdirSync('public/deals',{recursive:true});
+fs.writeFileSync(`public/deals/${today}.json`,JSON.stringify(deals,null,2));
+console.log(`Generated deals for ${today}: ${deals.length} items`);
+process.exit(0);

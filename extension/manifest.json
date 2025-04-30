@@ -1,0 +1,16 @@
+{
+  "name": "AU Price Tracker",
+  "description": "Track prices directly from retailer pages.",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": ["activeTab","storage"],
+  "action": {
+    "default_title": "Track price"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*/*","http://*/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
